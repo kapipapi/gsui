@@ -1,0 +1,17 @@
+.mode-status {
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
+}
+
+.name {
+    text-transform: uppercase;
+    color: gray;
+    font-size: 1vw;
+}
+
+.mode-status img {
+    width: 40%;
+    height: 40%;
+    margin: 0% 30% 0% 30%;
+}

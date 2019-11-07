@@ -1,0 +1,10 @@
+.status-view {
+    width: 30vw;
+}
+
+.status-info-grid {
+    display: grid;
+    margin: 0vw 1vw;
+    width: 28vw;
+    grid-template-columns: repeat(3, 1fr);
+}

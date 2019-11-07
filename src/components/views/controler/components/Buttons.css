@@ -1,0 +1,16 @@
+#buttons_table_container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 10vw;
+    width: 10vw;
+    overflow: scroll;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.buttons_table td {
+    padding: 0.4vw;
+    font-size: 1vw;
+    margin: 0;
+    color: black;
+}

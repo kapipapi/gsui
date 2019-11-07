@@ -1,0 +1,27 @@
+.controler-view-opener {
+    background-color: grey;
+    color:white;
+    border-radius: 10px 10px 0 0;
+    padding: .8vw;
+    position: fixed;
+    bottom: 0;
+    right: 1vw;
+    cursor: pointer;
+}
+
+.controler-view {
+    position: fixed;
+    bottom: 1vw;
+    right: 1vw;
+    width: 21vw;
+    height: 20vw;
+}
+
+.close-button {
+    position: absolute;
+    top:0;
+    right: 0;
+    color: tomato;
+    cursor: pointer;
+    z-index: 1;
+}
