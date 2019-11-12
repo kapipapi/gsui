@@ -42,6 +42,7 @@ export default class SideMenu extends React.Component {
                                 return(<option value={id}>{id+". "+this.props.drones[id].name}</option>)
                             })}
                         </select>
+                        <button onClick={this.props.getDroneList}>U</button>
 
                         <StatusView 
                             drones={ this.props.drones }

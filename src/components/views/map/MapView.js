@@ -1,5 +1,5 @@
 import React from 'react'
-import {Map, TileLayer, Popup} from 'react-leaflet'
+import {Map, TileLayer, Popup, Marker} from 'react-leaflet'
 import RotatedMarker from './RotatedMarker'
 import L from 'leaflet'
 import './MapView.css'
@@ -7,6 +7,12 @@ import 'leaflet/dist/leaflet.css'
 
 const drone_icon = new L.Icon({
     iconUrl: require('./img/position.svg'),
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
+});
+
+const targer_icon = new L.Icon({
+    iconUrl: require('./img/target.svg'),
     iconSize: [40, 40],
     iconAnchor: [20, 20],
 });
@@ -21,8 +27,10 @@ export default class MapView extends React.Component {
             centering: true,
             map_position: [52.221460, 21.007130],
 
-            last_click: [],
+            last_click: [0,0],
         }
+
+        this.getWaypointPosition = this.getWaypointPosition.bind(this)
     }
 
     getMapCenter() {
@@ -36,7 +44,8 @@ export default class MapView extends React.Component {
     }
 
     getWaypointPosition(e) {
-        this.setState({last_click: e.latlng})
+        console.log(this.state.last_click)
+        this.setState({last_click: [e.latlng.lat, e.latlng.lng]})
     }
 
     render() {
@@ -73,6 +82,14 @@ export default class MapView extends React.Component {
                                     </RotatedMarker>
                                 )
                             })}
+                            <Marker
+                                icon={targer_icon}
+                                position={this.state.last_click}
+                            >
+                                <Popup>
+                                    Test
+                                </Popup>
+                            </Marker>
                         </Map>
                     ) : (null)
                 }
