@@ -1,5 +1,5 @@
  const getDroneList = () => {
-    fetch("http://localhost:5000/drones", {
+    fetch("/drones", {
         mode: "cors",
         method: "GET",
         headers: {
