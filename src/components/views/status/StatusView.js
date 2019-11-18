@@ -1,8 +1,8 @@
 import React from 'react'
 import StatusInfoBox from './components/StatusInfoBox'
 import './StatusView.css'
-import ModeStatus from './components/ModeStatus';
-import StateInfoBox from './components/StateInfoBox';
+// import ModeStatus from './components/ModeStatus'
+// import StateInfoBox from './components/StateInfoBox'
 
 export default class StatusView extends React.Component {
     constructor(props){
@@ -28,17 +28,19 @@ export default class StatusView extends React.Component {
                             <>
                             <h3 style={{textAlign: 'center', margin: '.5vw 0 0 0', padding: 0}}>{this.props.drones[this.props.recentDroneID]['name']}</h3><br/>
                             <div class='status-info-grid'>
-                                <StatusInfoBox  name='lat'       value={this.props.drones[this.props.recentDroneID]['lat']}           unit='deg'  />
-                                <StatusInfoBox  name='lon'       value={this.props.drones[this.props.recentDroneID]['lon']}           unit='deg'  />
-                                <StatusInfoBox  name='alt'       value={this.props.drones[this.props.recentDroneID]['alt']}           unit='m'    />
+                                <StatusInfoBox name='lat' value={this.props.drones[this.props.recentDroneID]['lat']} unit='deg'/>
+                                <StatusInfoBox name='lon' value={this.props.drones[this.props.recentDroneID]['lon']} unit='deg'/>
 
-                                <StatusInfoBox  name='h_vel'     value={this.props.drones[this.props.recentDroneID]['h_vel']}         unit='m/s'  />
-                                <ModeStatus     name='mode'      value={this.props.drones[this.props.recentDroneID]['current_mode']}              />
-                                <StatusInfoBox  name='v_vel'     value={this.props.drones[this.props.recentDroneID]['v_vel']}         unit='m/s'  />
+                                <StatusInfoBox name='alt' value={this.props.drones[this.props.recentDroneID]['alt']} unit='m'/>
+                                {/* <StatusInfoBox name='relative alt' value={this.props.drones[this.props.recentDroneID]['rel_alt']} unit='m'/> */}
+                                
+                                <StatusInfoBox name='vx' value={this.props.drones[this.props.recentDroneID]['vx']} unit='m/s'/>
+                                <StatusInfoBox name='vy' value={this.props.drones[this.props.recentDroneID]['vy']} unit='m/s'/>
+                                <StatusInfoBox name='vz' value={this.props.drones[this.props.recentDroneID]['vz']} unit='m/s'/>
 
-                                <StatusInfoBox  name='battery'   value={this.props.drones[this.props.recentDroneID]['battery']}       unit='%'    />
-                                <StateInfoBox   name='arm_state' value={this.props.drones[this.props.recentDroneID]['arm_state']}                 />
-                                <StateInfoBox   name='mission state'   value={this.props.drones[this.props.recentDroneID]['mission state']}       />
+                                <StatusInfoBox name='battery temp' value={this.props.drones[this.props.recentDroneID]['battery_temp']} unit='&deg;C'/>
+                                <StatusInfoBox name='battery voltage' value={this.props.drones[this.props.recentDroneID]['battery_voltage']} unit='VOLT'/>
+                                <StatusInfoBox name='battery percent' value={this.props.drones[this.props.recentDroneID]['battery_percent']} unit='%'/>
                             </div>
                             </>) : (null)}
                         </div>

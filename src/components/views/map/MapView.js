@@ -77,6 +77,7 @@ export default class MapView extends React.Component {
                                         <Popup>
                                             <p>{key}. {drone.name}</p>
                                             <p>{drone.lat}, {drone.lon}</p>
+                                            <p>hdg: {drone.hdg}</p>
                                             <p>{"Altitude: " + drone.alt + "m"}</p>
                                         </Popup>
                                     </RotatedMarker>
