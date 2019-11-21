@@ -21,12 +21,13 @@ export default class MapView extends React.Component {
 
     constructor() {
         super()
+
+        this.last_posision = [0,0]
+        this.zoom = 15
+        this.blockStatusUpdate = false
+
         this.state = {
             show: true,
-
-            centering: true,
-            map_position: [52.221460, 21.007130],
-
             last_click: [0,0],
         }
 
@@ -36,10 +37,20 @@ export default class MapView extends React.Component {
     getMapCenter() {
         let center_drone = this.props.drones[this.props.recentDroneID]
 
-        if (center_drone && this.state.centering) {
+        if (center_drone && this.props.centering) {
+            this.last_posision = [center_drone.lat, center_drone.lon]
             return [center_drone.lat, center_drone.lon]
         } else {
-            return this.state.map_position
+            return this.last_posision
+        }
+    }
+
+    getDronePosition(id) {
+        if(!this.blockStatusUpdate){
+            if(this.props.centering) this.last_posision = [this.props.drones[id].lat, this.props.drones[id].lon]
+            return [this.props.drones[id].lat, this.props.drones[id].lon]
+        } else {
+            return this.last_posision
         }
     }
 
@@ -52,11 +63,14 @@ export default class MapView extends React.Component {
         return(
             <>
                 {
-                    this.state.show ? (
+                    this.state.show ? (<>
                         <Map 
                             center={this.getMapCenter()} 
-                            zoom={15}
+                            zoom={17}
+                            maxZoom={19}
                             onClick={this.getWaypointPosition}
+                            // onzoomstart={()=>{this.blockStatusUpdate = true}}
+                            // onzoomend={()=>{this.blockStatusUpdate = false}}
                         >
                             <TileLayer
                                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -67,12 +81,13 @@ export default class MapView extends React.Component {
                                 return(
                                     <RotatedMarker
                                         icon={drone_icon}
-                                        position={[drone.lat, drone.lon]}
+                                        // position={[drone.lat,drone.lon]}
+                                        position={this.getDronePosition(key)}
                                         rotationAngle={drone.hdg}
                                         rotationOrigin={'center'}
                                         onMouseOver={(e) => {e.target.openPopup()}}
                                         onMouseOut={(e) => {e.target.closePopup()}}
-                                        onClick={() => {this.props.stateHandler(key)}}
+                                        onClick={() => {this.props.recentDroneIDHandler(key)}}
                                     >
                                         <Popup>
                                             <p>{key}. {drone.name}</p>
@@ -92,7 +107,7 @@ export default class MapView extends React.Component {
                                 </Popup>
                             </Marker>
                         </Map>
-                    ) : (null)
+                    </>) : (null)
                 }
             </>
         )

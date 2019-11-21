@@ -1,7 +1,7 @@
 import React from 'react'
-import './StateInfoBox.css'
+import './TextBox.css'
 
-export default class StateInfoBox extends React.Component {
+export default class TextBox extends React.Component {
 
     render() {
         return(

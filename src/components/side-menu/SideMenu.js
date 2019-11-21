@@ -24,7 +24,7 @@ export default class SideMenu extends React.Component {
     }
 
     changeRecentDroneID(e) {
-        this.props.stateHandler(e.target.value)
+        this.props.recentDroneIDHandler(e.target.value)
     }
 
     render() {
@@ -33,7 +33,7 @@ export default class SideMenu extends React.Component {
                 {
                     this.state.show ? (
                     <>
-                    <button className='button' style={{top: '1vw', left: '31vw'}} onClick={this.toggleShow}>&#8592;</button>
+                    <button className='side-menu-button' style={{top: '1vw', left: '31vw'}} onClick={this.toggleShow}>&#8592;</button>
                     <div class='side-menu'>
 
                         <select className="custom-select" onChange={this.changeRecentDroneID}>
@@ -42,16 +42,18 @@ export default class SideMenu extends React.Component {
                                 return(<option value={id}>{id+". "+this.props.drones[id].name}</option>)
                             })}
                         </select>
-                        <button onClick={this.props.getDroneList}>U</button>
+                        <button onClick={this.props.getDroneListHandler}>U</button>
 
                         <StatusView 
                             drones={ this.props.drones }
                             recentDroneID={ this.props.recentDroneID }
+                            centering={this.props.centering}
+                            mapCenteringHandle={ this.props.mapCenteringHandle }
                         />
 
                     </div>
                     </>
-                    ) : (<button className='button' style={{top: '1vw', left: '4vw'}} onClick={this.toggleShow}>&#8594;</button>)
+                    ) : (<button className='side-menu-button' style={{top: '1vw', left: '4vw'}} onClick={this.toggleShow}>&#8594;</button>)
                 } 
             </>
         )

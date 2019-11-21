@@ -1,8 +1,8 @@
 import React from 'react'
-import './StatusInfoBox.css'
+import './NumericBox.css'
 import NumberFormat from 'react-number-format'
 
-export default class StatusInfoBox extends React.Component {
+export default class NumericBox extends React.Component {
 
     render() {
         return(

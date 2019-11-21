@@ -31,6 +31,7 @@ export default class App extends React.Component {
         }
       },
       recentDroneID: -1,
+      centering: true,
     }
   }
 
@@ -42,7 +43,7 @@ export default class App extends React.Component {
   // REST API
   getDroneList = () => {
     
-    if(this.state.socket_io.disconnected) {
+    if(this.state.socket_io && this.state.socket_io.disconnected) {
       this.state.socket_io.connect()
     }
 
@@ -95,7 +96,7 @@ export default class App extends React.Component {
       d[id].battery_voltage = message.battery_voltage
       d[id].battery_percent = message.battery_percent
       
-      this.setState({drones: d})
+      this.setState({drones: d, recentDroneID: id})
     })
 
     socket.on('disconnect', ()=>{
@@ -113,14 +114,17 @@ export default class App extends React.Component {
         <SideMenu
           drones={this.state.drones}
           recentDroneID={this.state.recentDroneID}
-          stateHandler={(state)=>{this.setState({recentDroneID: state})}}
-          getDroneList={this.getDroneList}
+          recentDroneIDHandler={state=>this.setState({recentDroneID: state})}
+          getDroneListHandler={this.getDroneList}
+          centering={this.state.centering}
+          mapCenteringHandle={state=>this.setState({centering: state})}
         />
 
         <MapView
           drones={this.state.drones}
           recentDroneID={this.state.recentDroneID}
-          stateHandler={(state)=>{this.setState({recentDroneID: state})}}
+          recentDroneIDHandler={(state)=>{this.setState({recentDroneID: state})}}
+          centering={this.state.centering}
         />
 
         <ControlerView />
