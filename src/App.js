@@ -36,8 +36,8 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    this.startDroneStatus();
-    window.setInterval(()=>{this.getDroneList()}, 1000)
+    // this.startDroneStatus();
+    // window.setInterval(()=>{this.getDroneList()}, 1000)
   }
 
   // REST API
@@ -109,7 +109,9 @@ export default class App extends React.Component {
     return(
       <div class='app-container'>
 
-        <h1 style={{textAlign: "center", fontSize: "2vw"}}>WUThrust Ground Station</h1>
+        <MapView />
+
+        <h1 style={{textAlign: "center", fontSize: "2vw", position: "fixed", top: "1vh", width: "100vw"}}>WUThrust Ground Station</h1>
 
         <SideMenu
           drones={this.state.drones}
@@ -120,12 +122,12 @@ export default class App extends React.Component {
           mapCenteringHandle={state=>this.setState({centering: state})}
         />
 
-        <MapView
+        {/* <MapView
           drones={this.state.drones}
           recentDroneID={this.state.recentDroneID}
           recentDroneIDHandler={(state)=>{this.setState({recentDroneID: state})}}
           centering={this.state.centering}
-        />
+        /> */}
 
         <ControlerView />
 

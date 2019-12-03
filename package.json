@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "express": "^4.17.1",
+    "google-map-react": "^1.1.5",
     "google-maps-react": "^2.0.2",
     "leaflet": "^1.5.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-google-maps": "^9.4.5",
     "react-leaflet": "^2.5.0",
     "react-leaflet-rotatedmarker": "^0.1.0",
     "react-number-format": "^4.3.1",
