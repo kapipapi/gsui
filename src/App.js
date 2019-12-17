@@ -125,6 +125,7 @@ export default class App extends React.Component {
           recentDroneID={this.state.recentDroneID}
           recentDroneIDHandler={(state)=>{this.setState({recentDroneID: state})}}
           centering={this.state.centering}
+          socket_io={this.state.socket_io}
         />
 
         <ControlerView />
