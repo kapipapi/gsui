@@ -1,10 +1,11 @@
 import React from 'react'
-import {Map, TileLayer, Popup, Marker, Polyline} from 'react-leaflet'
+import {Map, TileLayer, Popup, Marker, Polyline, CircleMarker} from 'react-leaflet'
 import RotatedMarker from './RotatedMarker'
-import MissionMaker from '../mission_maker/MissionMaker'
 import L from 'leaflet'
 import './MapView.css'
 import 'leaflet/dist/leaflet.css'
+import UserControlMaker from '../user_control_marker/UserControlMarker'
+import CurrentMissionView from '../current_mission/CurrentMissionView'
 
 const drone_icon = new L.Icon({
     iconUrl: require('./img/position.svg'),
@@ -31,11 +32,13 @@ export default class MapView extends React.Component {
             show: true,
             last_click: [0,0],
             path: {},
+            current_mission: undefined,
         }
 
         this.getWaypointPosition = this.getWaypointPosition.bind(this)
+        this.getCurrentMission = this.getCurrentMission.bind(this)
     }
-    
+
     deg2rad(deg) {
         return deg * (Math.PI/180)
     }
@@ -105,11 +108,30 @@ export default class MapView extends React.Component {
         this.setState({last_click: [e.latlng.lat, e.latlng.lng]})
     }
 
+    getCurrentMission(mission_updated) {
+        this.setState({current_mission: mission_updated})
+    }
+
+    getCurrentMissionPath(waypoints) {
+        let path = []
+        waypoints.forEach(val => {
+            path.push(val)
+        })
+        return path
+    }
+
     render() {
         return(
             <>
                 {
                     this.state.show ? (<>
+
+                        {/* CURRENT MISSION VIEW TAB */}
+                        <CurrentMissionView
+                            current_mission={this.state.current_mission}
+                        />
+
+                        {/* MAP COMPONENT WITH MARKERS AND DRONE POSITION INITION */}
                         <Map 
                             center={this.getMapCenter()} 
                             zoom={17}
@@ -121,6 +143,7 @@ export default class MapView extends React.Component {
                                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
+
                             {Object.keys(this.props.drones).map((key)=>{
                                 let drone = this.props.drones[key]
                                 return(<>
@@ -143,7 +166,8 @@ export default class MapView extends React.Component {
                                 </>)
                             })}
 
-                            {Object.keys(this.props.drones).map((key)=>{
+                            {this.state.drones &&
+                            Object.keys(this.props.drones).map((key)=>{
                                 let drone = this.props.drones[key]
                                 if(this.state.path[drone.drone_id]) {
                                     var path_tmp = this.state.path[drone.drone_id].slice()
@@ -156,17 +180,44 @@ export default class MapView extends React.Component {
                                 }
                             })}
 
+                            {/* DRAW MISSION PATH */}
+                            {this.state.current_mission &&
+                                <Polyline
+                                    positions={this.getCurrentMissionPath(this.state.current_mission.waypoints)}
+                                    color={"red"}
+                                />
+                            }
+
+                            {/* DRAW MISSION MARKERS */}
+                            {this.state.current_mission &&
+                            Object.keys(this.state.current_mission.waypoints).map((key)=>{
+                                let waypoint = this.state.current_mission.waypoints[key]
+                                return(
+                                    <CircleMarker
+                                        center={[waypoint.lat, waypoint.lon]}
+                                        color={"red"}
+                                    >
+                                        <Popup>
+                                            <h1>{waypoint.id == 0 ? "START" : waypoint.id}</h1>
+                                        </Popup>
+                                    </CircleMarker>
+                                )
+                            })}
+
                             <Marker
                                 icon={targer_icon}
                                 position={this.state.last_click}
                                 onMouseOver={(e) => {e.target.openPopup()}}
                             >
                                 <Popup>
-                                    <MissionMaker 
+                                    <UserControlMaker
+                                        drone_id={this.state.recentDroneID}
                                         position={this.state.last_click}
+                                        updateCurrentMissionHandler={this.getCurrentMission}
                                     />
                                 </Popup>
                             </Marker>
+
                         </Map>
                     </>) : (null)
                 }
