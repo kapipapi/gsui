@@ -129,6 +129,7 @@ export default class MapView extends React.Component {
                         {/* CURRENT MISSION VIEW TAB */}
                         <CurrentMissionView
                             current_mission={this.state.current_mission}
+                            updateCurrentMissionHandler={this.getCurrentMission}
                         />
 
                         {/* MAP COMPONENT WITH MARKERS AND DRONE POSITION INITION */}
@@ -166,8 +167,7 @@ export default class MapView extends React.Component {
                                 </>)
                             })}
 
-                            {this.state.drones &&
-                            Object.keys(this.props.drones).map((key)=>{
+                            {Object.keys(this.props.drones).map((key)=>{
                                 let drone = this.props.drones[key]
                                 if(this.state.path[drone.drone_id]) {
                                     var path_tmp = this.state.path[drone.drone_id].slice()
@@ -184,18 +184,19 @@ export default class MapView extends React.Component {
                             {this.state.current_mission &&
                                 <Polyline
                                     positions={this.getCurrentMissionPath(this.state.current_mission.waypoints)}
-                                    color={"red"}
+                                    color={"orange"}
                                 />
                             }
 
                             {/* DRAW MISSION MARKERS */}
                             {this.state.current_mission &&
                             Object.keys(this.state.current_mission.waypoints).map((key)=>{
+                                let last_index = this.state.current_mission.waypoints.length
                                 let waypoint = this.state.current_mission.waypoints[key]
                                 return(
                                     <CircleMarker
                                         center={[waypoint.lat, waypoint.lon]}
-                                        color={"red"}
+                                        color={ key == 0 ? "green" : key == last_index-1 ? "red" : "orange" }
                                     >
                                         <Popup>
                                             <h1>{waypoint.id == 0 ? "START" : waypoint.id}</h1>
@@ -207,14 +208,15 @@ export default class MapView extends React.Component {
                             <Marker
                                 icon={targer_icon}
                                 position={this.state.last_click}
-                                onMouseOver={(e) => {e.target.openPopup()}}
+                                openPopup={false}
                             >
                                 <Popup>
                                     <UserControlMaker
-                                        drone_id={this.state.recentDroneID}
+                                        drone_id={this.props.recentDroneID}
                                         position={this.state.last_click}
                                         updateCurrentMissionHandler={this.getCurrentMission}
                                     />
+
                                 </Popup>
                             </Marker>
 

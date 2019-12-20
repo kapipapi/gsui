@@ -17,12 +17,11 @@ export default class UserControlMaker extends React.Component {
         this.setState({go_to_status: "sending..."})
 
         let go_to_data = {
-            "drone_id": this.props.drone_id,
             "lat": this.props.position[0],
             "lon": this.props.position[1],
         }
 
-        fetch("/drones/0/go-to", {
+        fetch("/drones/"+this.props.drone_id+"/go-to", {
             method: "POST",
             mode: "cors",
             headers: {
@@ -44,8 +43,6 @@ export default class UserControlMaker extends React.Component {
             "alt": undefined,
         }
 
-        console.log("Added new waypoint to mission", waypoint)
-
         let waypoints_tmp = this.state.current_mission.waypoints
         waypoints_tmp.push(waypoint)
 
@@ -62,10 +59,10 @@ export default class UserControlMaker extends React.Component {
     render() {
         return(
             <div>
-                <button style={{fontSize: "2vmax",}} onClick={()=>{this.sendGoToAction()}}>&#9737;Go to</button>
+                <button style={{fontSize: "1.5vh",}} onClick={()=>{this.sendGoToAction()}}>&#9737;Go to</button>
                 Status: {this.state.go_to_status}
                 <hr/>
-                <button style={{fontSize: "1.5vmax",}} onClick={()=>{this.addWaypointToCurrentMission()}}> + Add waypoint to current mission</button>
+                <button style={{fontSize: "1.5vh",}} onClick={()=>{this.addWaypointToCurrentMission()}}> + Add waypoint to current mission</button>
             </div>
         )
     }

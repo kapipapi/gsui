@@ -25,9 +25,6 @@ export default class App extends React.Component {
           "vy": 0,
           "vz": 0,
           "hdg": 0,
-          "battery_temp": 0,
-          "battery_voltage": 0,
-          "battery_percent": 0,
         }
       },
       recentDroneID: -1,
@@ -91,10 +88,6 @@ export default class App extends React.Component {
       d[id].vz = message.vz
 
       d[id].hdg = message.hdg
-
-      d[id].battery_temp = message.battery_temp
-      d[id].battery_voltage = message.battery_voltage
-      d[id].battery_percent = message.battery_percent
       
       this.setState({drones: d, recentDroneID: id})
     })
