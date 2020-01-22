@@ -31,15 +31,17 @@ export default class MapView extends React.Component {
         this.state = {
             show: true,
             last_click: [0,0],
-            path: [],
+            path: {},
             current_mission: {
                 index: 0,
                 waypoints: [],
             },
+            default_altitude: 100,
         }
 
         this.getWaypointPosition = this.getWaypointPosition.bind(this)
         this.getCurrentMission = this.getCurrentMission.bind(this)
+        this.updateWaypointAltitude = this.updateWaypointAltitude.bind(this)
     }
 
     deg2rad(deg) {
@@ -125,6 +127,20 @@ export default class MapView extends React.Component {
         return path
     }
 
+    updateWaypointAltitude(id, new_altitude) {
+        let waypoint = this.state.current_mission.waypoints[id]
+        waypoint.alt = new_altitude
+        let waypoints_tmp = this.state.current_mission.waypoints
+        waypoints_tmp[id] = waypoint
+        this.setState({
+            current_mission: {
+                index: this.state.current_mission.index,
+                waypoints: waypoints_tmp,
+            },
+            default_altitude: new_altitude,
+        })
+    }
+
     render() {
         return(
             <>
@@ -135,6 +151,7 @@ export default class MapView extends React.Component {
                         <CurrentMissionView
                             current_mission={this.state.current_mission}
                             updateCurrentMissionHandler={this.getCurrentMission}
+                            updateWaypointAltitude={this.updateWaypointAltitude}
                         />
 
                         {/* MAP COMPONENT WITH MARKERS AND DRONE POSITION INITION */}
@@ -185,6 +202,14 @@ export default class MapView extends React.Component {
                                 }
                             })}
 
+                            {/* DRAW MISSION PATH */}
+                            {this.state.current_mission &&
+                                <Polyline
+                                    positions={this.getCurrentMissionPath(this.state.current_mission.waypoints)}
+                                    color={"orange"}
+                                />
+                            }
+
                             {/* DRAW MISSION MARKERS */}
                             {this.state.current_mission &&
                             Object.keys(this.state.current_mission.waypoints).map((key)=>{
@@ -205,7 +230,7 @@ export default class MapView extends React.Component {
                             <Marker
                                 icon={targer_icon}
                                 position={this.state.last_click}
-                                openPopup={false}
+                                onMouseOver={(e) => {e.target.openPopup()}}
                             >
                                 <Popup>
                                     <UserControlMaker
@@ -213,6 +238,7 @@ export default class MapView extends React.Component {
                                         position={this.state.last_click}
                                         current_mission={this.state.current_mission}
                                         updateCurrentMissionHandler={this.getCurrentMission}
+                                        default_altitude={this.state.default_altitude}
                                     />
                                 </Popup>
                             </Marker>

@@ -36,7 +36,7 @@ export default class UserControlMaker extends React.Component {
             "id": this.props.current_mission.index,
             "lat": this.props.position[0],
             "lon": this.props.position[1],
-            "alt": undefined,
+            "alt": this.props.default_altitude,
         }
 
         let waypoints_tmp = this.props.current_mission.waypoints
@@ -45,23 +45,23 @@ export default class UserControlMaker extends React.Component {
         const index_tmp = this.props.current_mission.index + 1
 
         const mission_tmp = {
-            current_mission: {
-                index: index_tmp,
-                waypoints: waypoints_tmp,
-            }
+            index: index_tmp,
+            waypoints: waypoints_tmp,
         }
 
         this.props.updateCurrentMissionHandler(mission_tmp)
     }
 
     render() {
-        return(
+        return(<>
             <div>
+                <p>{this.props.position[0]}, {this.props.position[1]}</p>
                 <button style={{fontSize: "1.5vh",}} onClick={()=>{this.sendGoToAction()}}>&#9737;Go to</button>
                 Status: {this.state.go_to_status}
                 <hr/>
                 <button style={{fontSize: "1.5vh",}} onClick={()=>{this.addWaypointToCurrentMission()}}> + Add waypoint to current mission</button>
             </div>
+            </>
         )
     }
 }
