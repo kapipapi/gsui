@@ -31,8 +31,11 @@ export default class MapView extends React.Component {
         this.state = {
             show: true,
             last_click: [0,0],
-            path: {},
-            current_mission: undefined,
+            path: [],
+            current_mission: {
+                index: 0,
+                waypoints: [],
+            },
         }
 
         this.getWaypointPosition = this.getWaypointPosition.bind(this)
@@ -108,15 +111,17 @@ export default class MapView extends React.Component {
         this.setState({last_click: [e.latlng.lat, e.latlng.lng]})
     }
 
-    getCurrentMission(mission_updated) {
-        this.setState({current_mission: mission_updated})
+    getCurrentMission(mission) {
+        this.setState({current_mission: mission})
     }
 
     getCurrentMissionPath(waypoints) {
         let path = []
-        waypoints.forEach(val => {
-            path.push(val)
-        })
+        if (waypoints) {
+            waypoints.forEach(val => {
+                path.push(val)
+            })
+        }
         return path
     }
 
@@ -180,14 +185,6 @@ export default class MapView extends React.Component {
                                 }
                             })}
 
-                            {/* DRAW MISSION PATH */}
-                            {this.state.current_mission &&
-                                <Polyline
-                                    positions={this.getCurrentMissionPath(this.state.current_mission.waypoints)}
-                                    color={"orange"}
-                                />
-                            }
-
                             {/* DRAW MISSION MARKERS */}
                             {this.state.current_mission &&
                             Object.keys(this.state.current_mission.waypoints).map((key)=>{
@@ -214,9 +211,9 @@ export default class MapView extends React.Component {
                                     <UserControlMaker
                                         drone_id={this.props.recentDroneID}
                                         position={this.state.last_click}
+                                        current_mission={this.state.current_mission}
                                         updateCurrentMissionHandler={this.getCurrentMission}
                                     />
-
                                 </Popup>
                             </Marker>
 
