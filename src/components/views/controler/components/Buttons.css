@@ -1,9 +1,9 @@
 #buttons_table_container {
     position: absolute;
-    top: 0;
+    top: 11vw;
     right: 0;
-    height: 10vw;
-    width: 10vw;
+    max-height: 10vw;
+    width: 21vw;
     overflow: scroll;
     background-color: rgba(255, 255, 255, 0.5);
 }

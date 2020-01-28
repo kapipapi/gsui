@@ -3,7 +3,6 @@ import './App.css'
 
 import SideMenu from './components/side-menu/SideMenu'
 import MapView from './components/views/map/MapView'
-import ControlerView from './components/views/controler/ControlerView'
 
 import io from "socket.io-client"
 
@@ -51,7 +50,10 @@ export default class App extends React.Component {
             "Accept": "application/json"
         }
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status!=200) console.log("fetch errno " + res.status)
+      else res.json()
+    })
     .then(message => {
       let d = this.state.drones
       Object.keys(message.drones).map((key, val)=>{
@@ -61,6 +63,7 @@ export default class App extends React.Component {
       })
       this.setState({drones: d})
     })
+    .catch((e)=>{})
   }
 
   // WEBSOCKET
@@ -102,7 +105,8 @@ export default class App extends React.Component {
     return(
       <div class='app-container'>
 
-        <h1 style={{textAlign: "center", fontSize: "2vw"}}>WUThrust Ground Station</h1>
+        <h1 style={{textAlign: "center", fontSize: "4vh", color:"yellow", margin: "0"}}>WUThrust Ground Station</h1>
+        <h2 style={{textAlign: "center", fontSize: "2vh", color:"yellow", margin: "0"}}>Operating drone with id <u>{this.state.recentDroneID}</u></h2>
 
         <SideMenu
           drones={this.state.drones}
@@ -120,8 +124,6 @@ export default class App extends React.Component {
           centering={this.state.centering}
           socket_io={this.state.socket_io}
         />
-
-        <ControlerView />
 
       </div>
     )

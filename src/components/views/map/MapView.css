@@ -5,6 +5,7 @@
     top: 0;
     left: 0;
     z-index: -3;
+    background-color:rgb(9, 9, 9) !important;
 }
 
 .map-view-button {
@@ -14,4 +15,10 @@
     background-color: lightyellow;
     color: gray;
     box-shadow: gray 1px 1px 10px;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 0 !important;
+    color: white !important;
+    background: rgba(9, 9, 9, 0.5) !important;
 }

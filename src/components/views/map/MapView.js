@@ -8,7 +8,7 @@ import UserControlMaker from '../user_control_marker/UserControlMarker'
 import CurrentMissionView from '../current_mission/CurrentMissionView'
 
 const drone_icon = new L.Icon({
-    iconUrl: require('./img/position.svg'),
+    iconUrl: require('./img/position_yellow.svg'),
     iconSize: [40, 40],
     iconAnchor: [20, 20],
 });
@@ -149,6 +149,7 @@ export default class MapView extends React.Component {
 
                         {/* CURRENT MISSION VIEW TAB */}
                         <CurrentMissionView
+                            drone_id={this.props.recentDroneID}
                             current_mission={this.state.current_mission}
                             updateCurrentMissionHandler={this.getCurrentMission}
                             updateWaypointAltitude={this.updateWaypointAltitude}
@@ -161,10 +162,15 @@ export default class MapView extends React.Component {
                             maxZoom={19}
                             onClick={this.getWaypointPosition}
                             zoomAnimation={true}
+                            zoomControl={false}
                         >
-                            <TileLayer
+                            {/* <TileLayer
                                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            /> */}
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                                url='https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
                             />
 
                             {Object.keys(this.props.drones).map((key)=>{
@@ -206,7 +212,7 @@ export default class MapView extends React.Component {
                             {this.state.current_mission &&
                                 <Polyline
                                     positions={this.getCurrentMissionPath(this.state.current_mission.waypoints)}
-                                    color={"orange"}
+                                    color={"yellow"}
                                 />
                             }
 
