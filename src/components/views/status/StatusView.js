@@ -44,6 +44,18 @@ export default class StatusView extends React.Component {
                                     <p class='value'>{this.props.centering ? "ON" : "OFF"}</p>
                                 </div>
 
+                                <TextBox 
+                                    name="system status"
+                                    value={this.props.drones[this.props.recentDroneID]['sys_status']}
+                                />
+
+                                <TextBox 
+                                    name="mode"
+                                    value={this.props.drones[this.props.recentDroneID]['mode']}
+                                />
+
+                                <button onClick={()=>{console.log(this.props.drones[this.props.recentDroneID])}}>GET JSON</button>
+
                             </div>
                             </>) : (null)}
                         </div>

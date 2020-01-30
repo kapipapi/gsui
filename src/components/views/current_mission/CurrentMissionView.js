@@ -45,7 +45,7 @@ export default class CurrentMissionView extends React.Component {
                         <div class='current-mission-view'>
                             <ul class='horizontal-menu-mission-view'>
                                 <li><div onClick={this.toggleShow}>&#10539;<br/>close</div></li>
-                                <li><div onClick={()=>{this.props.updateCurrentMissionHandler({index: 0,waypoints: [],})}} style={{position:"relative", top: "-0.5vh"}}><span style={{fontSize:"3vh"}}>&#8709;</span><br/><span style={{position:"relative", top: "-0.3vh"}}>clear</span></div></li>
+                                <li><div onClick={()=>{this.props.updateCurrentMissionHandler({index: 0,waypoints: [],})}}>&#8709;<br/>clear</div></li>
                             </ul>
                             
                             <div className="waypoint_pannel_container">
@@ -69,7 +69,7 @@ export default class CurrentMissionView extends React.Component {
                                 waypoint_id={this.props.current_mission.index-1}
                                 updateWaypointAltitude = {this.props.updateWaypointAltitude}
                             />
-                            <div className="startButton" onClick={()=>{this.sendMissionAction()}}>DEPLOY MISSION</div>
+                            <div className="start_button" onClick={()=>{this.sendMissionAction()}}>DEPLOY MISSION</div>
                             </>}
 
                             

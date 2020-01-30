@@ -24,6 +24,9 @@ export default class App extends React.Component {
           "vy": 0,
           "vz": 0,
           "hdg": 0,
+          "autopilot": "",
+          "mode": "",
+          "sys_status": "",
         }
       },
       recentDroneID: -1,
@@ -91,7 +94,11 @@ export default class App extends React.Component {
       d[id].vz = message.vz
 
       d[id].hdg = message.hdg
-      
+
+      d[id].autopilot = message.autopilot
+      d[id].mode = message.mode
+      d[id].sys_status = message.sys_status
+
       this.setState({drones: d, recentDroneID: id})
     })
 
@@ -99,14 +106,14 @@ export default class App extends React.Component {
       console.log('disconnected')
       socket.connect()
     })
-}
+  }
 
   render() {
     return(
       <div class='app-container'>
 
-        <h1 style={{textAlign: "center", fontSize: "4vh", color:"yellow", margin: "0"}}>WUThrust Ground Station</h1>
-        <h2 style={{textAlign: "center", fontSize: "2vh", color:"yellow", margin: "0"}}>Operating drone with id <u>{this.state.recentDroneID}</u></h2>
+        <h1 style={{textAlign: "center", fontSize: "4vh", color:"#2F8565", margin: "0"}}>WUThrust Ground Station</h1>
+        <h2 style={{textAlign: "center", fontSize: "2vh", color:"#2F8565", margin: "0"}}>Operating drone with id <u>{this.state.recentDroneID}</u></h2>
 
         <SideMenu
           drones={this.state.drones}
@@ -123,6 +130,7 @@ export default class App extends React.Component {
           recentDroneIDHandler={(state)=>{this.setState({recentDroneID: state})}}
           centering={this.state.centering}
           socket_io={this.state.socket_io}
+          setCenteringState={(val)=>{this.setState({centering: val})}}
         />
 
       </div>

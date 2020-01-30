@@ -1,6 +1,6 @@
 .current-mission-view-opener {
     background-color: rgba(0, 0, 0, 0.2);
-    color:yellow;
+    color:#2F8565;
     position: fixed;
     top: 0;
     right: 0;
@@ -8,7 +8,7 @@
     height: 100vh;
     width: 2vw;
     transition-duration: 300ms;
-    border-left: 2px solid yellow;
+    border-left: 2px solid #2F8565;
 }
 
 .current-mission-view-opener:hover {
@@ -24,7 +24,7 @@
     padding: 1vh;
     padding-top: 1.5vh;
     background-color: rgba(0, 0, 0, 0.2);
-    border-left: 2px solid yellow;
+    border-left: 2px solid #2F8565;
     overflow: scroll;   
     border-bottom-left-radius: 10px;
     z-index: 1;
@@ -39,27 +39,40 @@
 
 .horizontal-menu-mission-view li {
     float: left;
-    height: 8vh;
 }
 
 .horizontal-menu-mission-view li div {
     display: block;
-    color: yellow;
-    background-color: #999;
+    color: #2F8565;
+    background-color: rgb(205, 205, 205);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     cursor: pointer;
-    font-size: 2vh;
+    font-size: 1vw;
+    width: 2.5vw;
+    height: 2.5vw;
+    transition-duration: 100ms;
 }
 
 .horizontal-menu-mission-view li div:hover {
-    background-color: #666;
+    color: white;
+    background-color: rgb(138, 138, 138);
+    border-bottom: 2px solid #2F8565;
 }
 
 .waypoint_pannel_container {
     max-height: 60vh;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.waypoint_pannel_container::-webkit-scrollbar {
+    background:rgb(77, 77, 77);
+}
+
+.waypoint_pannel_container::-webkit-scrollbar-thumb {
+    background:#2F8565;
 }
 
 .waypoint-pannel {
@@ -75,7 +88,7 @@
     margin: 0;
 }
 
-.startButton {
+.start_button {
     position: relative;
     bottom: 0;
     padding: 1vh;
@@ -84,8 +97,9 @@
     font-family: monospace;
     color: black;
     background-color: darkgreen;
+    cursor: pointer;
 }
 
-.startButton:hover {
+.start_button:hover {
     background-color: green;
 }

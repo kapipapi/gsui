@@ -8,7 +8,7 @@ import UserControlMaker from '../user_control_marker/UserControlMarker'
 import CurrentMissionView from '../current_mission/CurrentMissionView'
 
 const drone_icon = new L.Icon({
-    iconUrl: require('./img/position_yellow.svg'),
+    iconUrl: require('./img/position_wuthrust.svg'),
     iconSize: [40, 40],
     iconAnchor: [20, 20],
 });
@@ -163,11 +163,9 @@ export default class MapView extends React.Component {
                             onClick={this.getWaypointPosition}
                             zoomAnimation={true}
                             zoomControl={false}
+                            ondragstart={()=>this.props.setCenteringState(false)}
+                            onzoomstart={()=>this.props.setCenteringState(false)}
                         >
-                            {/* <TileLayer
-                                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            /> */}
                             <TileLayer
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
                                 url='https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
@@ -183,7 +181,10 @@ export default class MapView extends React.Component {
                                         rotationOrigin={'center'}
                                         onMouseOver={(e) => {e.target.openPopup()}}
                                         onMouseOut={(e) => {e.target.closePopup()}}
-                                        onClick={() => {this.props.recentDroneIDHandler(key)}}
+                                        onClick={() => {
+                                                        this.props.recentDroneIDHandler(key);
+                                                        this.props.setCenteringState(true);
+                                                    }}
                                     >
                                         <Popup>
                                             <p>{key}. {drone.name}</p>
@@ -212,7 +213,7 @@ export default class MapView extends React.Component {
                             {this.state.current_mission &&
                                 <Polyline
                                     positions={this.getCurrentMissionPath(this.state.current_mission.waypoints)}
-                                    color={"yellow"}
+                                    color={"#2F8565"}
                                 />
                             }
 
