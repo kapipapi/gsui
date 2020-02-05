@@ -12,23 +12,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       socket_io: null,
-      drones: {
-        0: {
-          "drone_id": 0,
-          "name": "",
-          "lat": 0,
-          "lon": 0,
-          "alt": 0,
-          "rel_alt": 0,
-          "vx": 0,
-          "vy": 0,
-          "vz": 0,
-          "hdg": 0,
-          "autopilot": "",
-          "mode": "",
-          "sys_status": "",
-        }
-      },
+      drones: {},
       recentDroneID: -1,
       centering: true,
     }
@@ -77,11 +61,34 @@ export default class App extends React.Component {
         console.log('connected')
         this.setState({socket_io: socket})
         socket.emit('subscribe', {"drone_id": 0})
+        socket.emit('subscribe', {"drone_id": 1})
     })
     
     socket.on('status', (message)=> {
       let id = message['drone_id']
       let d = this.state.drones
+      
+      if(!d[id]) {
+        d[id] = {
+          "drone_id": id,
+          "name": "test #"+id,
+          "lat": 0,
+          "lon": 0,
+          "alt": 0,
+          "rel_alt": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hdg": 0,
+          "autopilot": "",
+          "mode": "",
+          "sys_status": "",
+          "mission": {
+            index: 0,
+            waypoints: [],
+          },
+        }
+      }
 
       d[id].lat = message.lat
       d[id].lon = message.lon
@@ -99,13 +106,21 @@ export default class App extends React.Component {
       d[id].mode = message.mode
       d[id].sys_status = message.sys_status
 
-      this.setState({drones: d, recentDroneID: id})
+      this.setState({drones: d})
+      if(this.state.recentDroneID == -1) this.setState({recentDroneID: id})
     })
 
     socket.on('disconnect', ()=>{
       console.log('disconnected')
       socket.connect()
     })
+  }
+
+  changeMission(id, mission) {
+    let d = this.state.drones
+    d[id].mission.index = mission.index
+    d[id].mission.waypoints = mission.waypoints
+    this.setState({drones: d})
   }
 
   render() {
@@ -131,6 +146,7 @@ export default class App extends React.Component {
           centering={this.state.centering}
           socket_io={this.state.socket_io}
           setCenteringState={(val)=>{this.setState({centering: val})}}
+          changeMission={(index, mission)=>this.changeMission(index, mission)}
         />
 
       </div>

@@ -103,3 +103,18 @@
 .start_button:hover {
     background-color: green;
 }
+
+.download_mission_button {
+    position: relative;
+    bottom: 0;
+    padding: 0.5vh;
+    font-size: 1.5vh;
+    text-align: center;
+    color: white;
+    background-color: #555;
+    cursor: pointer;
+}
+
+.download_mission_button:hover {
+    background-color: #999;
+}

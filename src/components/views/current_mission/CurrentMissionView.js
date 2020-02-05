@@ -12,6 +12,7 @@ export default class CurrentMissionView extends React.Component {
         super(props)
         this.state = {
             show: true,
+            selected: 0,
         }
 
         this.toggleShow = this.toggleShow.bind(this)
@@ -37,6 +38,21 @@ export default class CurrentMissionView extends React.Component {
         })
     }
 
+    downloadMission() {
+        fetch("/drones/"+this.props.drone_id+"/mission", {
+            mode: "cors",
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        })
+        .then(res => res.json())
+        .then(message => {
+            let mission = JSON.parse(message.status)
+            this.props.updateCurrentMissionHandler(mission)
+        })
+    }
+
     render() {
         return(
             <>
@@ -57,22 +73,23 @@ export default class CurrentMissionView extends React.Component {
                                             id={waypoint.id}
                                             position={[waypoint.lat, waypoint.lon]}
                                             alt={waypoint.alt}
-                                            />
+                                            selected={this.state.selected}
+                                            changeSelected={()=>this.setState({selected: waypoint.id})}
+                                        />
                                     </>)
                                 })
                             }
+                            <div className="download_mission_button" onClick={()=>this.downloadMission()}>DOWNLOAD CURRENT MISSION</div>
                             </div>
                             
                             {this.props.current_mission.index>0 &&
                             <>
                             <AltitudeSlider 
-                                waypoint_id={this.props.current_mission.index-1}
+                                waypoint_id={this.state.selected}
                                 updateWaypointAltitude = {this.props.updateWaypointAltitude}
                             />
                             <div className="start_button" onClick={()=>{this.sendMissionAction()}}>DEPLOY MISSION</div>
                             </>}
-
-                            
 
                             <ControlerView />
 

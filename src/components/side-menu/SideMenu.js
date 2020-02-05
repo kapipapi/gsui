@@ -40,7 +40,6 @@ export default class SideMenu extends React.Component {
                             className="custom-select" 
                             onChange={this.changeRecentDroneID} 
                             onClick={this.props.getDroneListHandler}>
-                            <option value={-1}>hide</option>
                             {Object.keys(this.props.drones).map((id, d)=>{
                                 return(<option value={id}>{id+". "+this.props.drones[id].name}</option>)
                             })}
