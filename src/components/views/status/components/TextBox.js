@@ -7,7 +7,7 @@ export default class TextBox extends React.Component {
         return(
             <div class='state-info-box'>
                 <p class='name'>{this.props.name}</p>
-                <p class='value'>{this.props.value}</p>
+                <p class='value' style={{fontSize: "1vw", marginTop: "35%"}}>{this.props.value}</p>
             </div>
         )
     }

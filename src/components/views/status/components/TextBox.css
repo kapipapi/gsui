@@ -3,19 +3,3 @@
     text-align: center;
     overflow: hidden;
 }
-
-.name {
-    text-transform: uppercase;
-    color: gray;
-    font-size: 1vw;
-}
-
-.value {
-    color: black;
-    font-size: 2vw;
-}
-
-.units {
-    color: gray;
-    font-size: 1vw;
-}

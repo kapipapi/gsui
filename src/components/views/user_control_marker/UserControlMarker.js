@@ -37,6 +37,7 @@ export default class UserControlMaker extends React.Component {
             "lat": this.props.position[0],
             "lon": this.props.position[1],
             "alt": this.props.default_altitude,
+            "speed": 10,
         }
 
         let waypoints_tmp = this.props.current_mission.waypoints

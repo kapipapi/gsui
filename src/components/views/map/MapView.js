@@ -8,15 +8,15 @@ import UserControlMaker from '../user_control_marker/UserControlMarker'
 import CurrentMissionView from '../current_mission/CurrentMissionView'
 
 const drone_icon = new L.Icon({
-    iconUrl: require('./img/position.svg'),
+    iconUrl: require('./img/position_wuthrust.svg'),
     iconSize: [40, 40],
     iconAnchor: [20, 20],
 });
 
 const targer_icon = new L.Icon({
-    iconUrl: require('./img/target.svg'),
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
+    iconUrl: require('./img/target_new.svg'),
+    iconSize: [12, 12],
+    iconAnchor: [6, 6],
 });
 
 export default class MapView extends React.Component {
@@ -28,6 +28,10 @@ export default class MapView extends React.Component {
         this.zoom = 15
         this.blockStatusUpdate = false
 
+        this.map_atr = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        this.url = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        this.darkMode = true
+
         this.state = {
             show: true,
             last_click: [0,0],
@@ -37,11 +41,13 @@ export default class MapView extends React.Component {
                 waypoints: [],
             },
             default_altitude: 100,
+            default_speed: 100,
         }
 
         this.getWaypointPosition = this.getWaypointPosition.bind(this)
         this.getCurrentMission = this.getCurrentMission.bind(this)
         this.updateWaypointAltitude = this.updateWaypointAltitude.bind(this)
+        this.updateWaypointSpeed = this.updateWaypointSpeed.bind(this)
     }
 
     deg2rad(deg) {
@@ -114,7 +120,7 @@ export default class MapView extends React.Component {
     }
 
     getCurrentMission(mission) {
-        this.setState({current_mission: mission})
+        this.props.changeMission(this.props.recentDroneID, mission)
     }
 
     getCurrentMissionPath(waypoints) {
@@ -128,30 +134,59 @@ export default class MapView extends React.Component {
     }
 
     updateWaypointAltitude(id, new_altitude) {
-        let waypoint = this.state.current_mission.waypoints[id]
+        let drone = this.props.drones[this.props.recentDroneID]
+        let waypoint = drone.mission.waypoints[id]
         waypoint.alt = new_altitude
-        let waypoints_tmp = this.state.current_mission.waypoints
+        let waypoints_tmp = drone.mission.waypoints
         waypoints_tmp[id] = waypoint
         this.setState({
             current_mission: {
-                index: this.state.current_mission.index,
+                index: drone.mission.index,
                 waypoints: waypoints_tmp,
             },
             default_altitude: new_altitude,
         })
     }
 
+    updateWaypointSpeed(id, new_speed) {
+        let drone = this.props.drones[this.props.recentDroneID]
+        let waypoint = drone.mission.waypoints[id]
+        waypoint.speed = new_speed
+        let waypoints_tmp = drone.mission.waypoints
+        waypoints_tmp[id] = waypoint
+        this.setState({
+            current_mission: {
+                index: drone.mission.index,
+                waypoints: waypoints_tmp,
+            },
+            default_speed: new_speed,
+        })
+    }
+
+    darkModeSwitch() {
+        this.darkMode = !this.darkMode
+        if(this.darkMode) {
+            this.map_atr = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            this.url = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        } else {
+            this.map_atr='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            this.url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        }
+    }
+
     render() {
         return(
             <>
                 {
-                    this.state.show ? (<>
+                    this.state.show ? (this.props.drones[this.props.recentDroneID] && <>
 
                         {/* CURRENT MISSION VIEW TAB */}
                         <CurrentMissionView
-                            current_mission={this.state.current_mission}
+                            drone_id={this.props.recentDroneID}
+                            current_mission={this.props.drones[this.props.recentDroneID].mission}
                             updateCurrentMissionHandler={this.getCurrentMission}
                             updateWaypointAltitude={this.updateWaypointAltitude}
+                            updateWaypointSpeed={this.updateWaypointSpeed}
                         />
 
                         {/* MAP COMPONENT WITH MARKERS AND DRONE POSITION INITION */}
@@ -161,10 +196,13 @@ export default class MapView extends React.Component {
                             maxZoom={19}
                             onClick={this.getWaypointPosition}
                             zoomAnimation={true}
+                            zoomControl={false}
+                            ondragstart={()=>this.props.setCenteringState(false)}
+                            onzoomstart={()=>this.props.setCenteringState(false)}
                         >
                             <TileLayer
-                                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                attribution={this.map_atr}
+                                url={this.url}
                             />
 
                             {Object.keys(this.props.drones).map((key)=>{
@@ -177,9 +215,12 @@ export default class MapView extends React.Component {
                                         rotationOrigin={'center'}
                                         onMouseOver={(e) => {e.target.openPopup()}}
                                         onMouseOut={(e) => {e.target.closePopup()}}
-                                        onClick={() => {this.props.recentDroneIDHandler(key)}}
+                                        onClick={() => {
+                                                        this.props.recentDroneIDHandler(drone.drone_id);
+                                                        this.props.setCenteringState(true);
+                                                    }}
                                     >
-                                        <Popup>
+                                        <Popup autoPan={false}>
                                             <p>{key}. {drone.name}</p>
                                             <p>{drone.lat}, {drone.lon}</p>
                                             <p>hdg: {drone.hdg}</p>
@@ -203,24 +244,25 @@ export default class MapView extends React.Component {
                             })}
 
                             {/* DRAW MISSION PATH */}
-                            {this.state.current_mission &&
+                            {this.props.drones[this.props.recentDroneID].mission &&
                                 <Polyline
-                                    positions={this.getCurrentMissionPath(this.state.current_mission.waypoints)}
-                                    color={"orange"}
+                                    positions={this.getCurrentMissionPath(this.props.drones[this.props.recentDroneID].mission.waypoints)}
+                                    color={"#2F8565"}
                                 />
                             }
 
                             {/* DRAW MISSION MARKERS */}
-                            {this.state.current_mission &&
-                            Object.keys(this.state.current_mission.waypoints).map((key)=>{
-                                let last_index = this.state.current_mission.waypoints.length
-                                let waypoint = this.state.current_mission.waypoints[key]
+                            {this.props.drones[this.props.recentDroneID].mission &&
+                            Object.keys(this.props.drones[this.props.recentDroneID].mission.waypoints).map((key)=>{
+                                let drone = this.props.drones[this.props.recentDroneID]
+                                let last_index = drone.mission.waypoints.length
+                                let waypoint = drone.mission.waypoints[key]
                                 return(
                                     <CircleMarker
                                         center={[waypoint.lat, waypoint.lon]}
                                         color={ key == 0 ? "green" : key == last_index-1 ? "red" : "orange" }
                                     >
-                                        <Popup>
+                                        <Popup autoPan={false}>
                                             <h1>{waypoint.id == 0 ? "START" : waypoint.id}</h1>
                                         </Popup>
                                     </CircleMarker>
@@ -232,18 +274,19 @@ export default class MapView extends React.Component {
                                 position={this.state.last_click}
                                 onMouseOver={(e) => {e.target.openPopup()}}
                             >
-                                <Popup>
+                                <Popup autoPan={false}>
                                     <UserControlMaker
                                         drone_id={this.props.recentDroneID}
                                         position={this.state.last_click}
-                                        current_mission={this.state.current_mission}
+                                        current_mission={this.props.drones[this.props.recentDroneID].mission}
                                         updateCurrentMissionHandler={this.getCurrentMission}
                                         default_altitude={this.state.default_altitude}
                                     />
                                 </Popup>
                             </Marker>
-
                         </Map>
+
+                        <div class={this.darkMode ? 'dark_mode_toggle active' : 'dark_mode_toggle'} onClick={()=>this.darkModeSwitch()}></div>
                     </>) : (null)
                 }
             </>

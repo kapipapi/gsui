@@ -3,13 +3,6 @@
     text-align: center;
     overflow: hidden;
 }
-
-.name {
-    text-transform: uppercase;
-    color: gray;
-    font-size: 1vw;
-}
-
 .mode-status img {
     width: 40%;
     height: 40%;

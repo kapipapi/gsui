@@ -1,10 +1,26 @@
 .status-view {
-    width: 30vw;
+    width: 90%;
 }
 
 .status-info-grid {
     display: grid;
     margin: 0vw 1vw;
-    width: 28vw;
+    width: 100%;
     grid-template-columns: repeat(3, 1fr);
+}
+
+.name {
+    text-transform: uppercase;
+    color: gray;
+    font-size: 1vw;
+}
+
+.value {
+    color: white;
+    font-size: 2vw;
+}
+
+.units {
+    color: gray;
+    font-size: 1vw;
 }

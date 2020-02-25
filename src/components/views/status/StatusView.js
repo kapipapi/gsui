@@ -16,6 +16,21 @@ export default class StatusView extends React.Component {
     toggleShow() {
         this.state.show ? this.setState({show: false}) : this.setState({show: true}); 
     }
+
+    RTL() {
+        fetch("/drones/"+this.props.recentDroneID+"/rtl", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Accept": "application/json"
+            },
+            body: {"mode": "RTL"}
+        })
+        .then(res => res.json())
+        .then(message => {
+            console.log(message.status)
+        })
+    }
     
     render() {
         return(
@@ -25,7 +40,7 @@ export default class StatusView extends React.Component {
                         <div class='status-view'>
                             {this.props.recentDroneID > -1 ? (
                             <>
-                            <h3 style={{textAlign: 'center', margin: '.5vw 0 0 0', padding: 0}}>{this.props.drones[this.props.recentDroneID]['name']}</h3><br/>
+                            <h3 style={{textAlign: 'center', margin: '.5vw 0 0 0', padding: 0, color: "white"}}>{this.props.drones[this.props.recentDroneID]['name']}</h3><br/>
                             <div class='status-info-grid'>
                                 <NumericBox name='lat' value={this.props.drones[this.props.recentDroneID]['lat']} unit='deg'/>
                                 <NumericBox name='lon' value={this.props.drones[this.props.recentDroneID]['lon']} unit='deg'/>
@@ -43,6 +58,27 @@ export default class StatusView extends React.Component {
                                     <p class='name'>CENTERING</p>
                                     <p class='value'>{this.props.centering ? "ON" : "OFF"}</p>
                                 </div>
+
+                                <TextBox 
+                                    name="system status"
+                                    value={this.props.drones[this.props.recentDroneID]['sys_status']}
+                                />
+
+                                <TextBox 
+                                    name="mode"
+                                    value={this.props.drones[this.props.recentDroneID]['mode']}
+                                />
+
+                                <div 
+                                    class='state-info-box' 
+                                    onClick={()=>this.RTL()}
+                                    style={{cursor: "pointer"}}
+                                >
+                                    <p class='name'>RTL</p>
+                                    <p class='value' style={{color: "red"}}>RTL</p>
+                                </div>
+
+                                <button onClick={()=>{console.log(this.props.drones[this.props.recentDroneID])}}>GET JSON</button>
 
                             </div>
                             </>) : (null)}

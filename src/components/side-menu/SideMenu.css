@@ -4,24 +4,27 @@
     font-size: 2vw;
     cursor: pointer;
     position: fixed;
-    background-color: lightskyblue;
+    background-color: #2F8565;
     color: white;
     border-radius: 50%;
-    box-shadow: gray 1px 1px 10px;
+    outline: none;
 }
 
 .side-menu {
     position: fixed;
     top: 0;
     left: 0;
-    width: 30vw;
+    width: 25vw;
     height: 100vh;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(19,19,19, 0.7);
 }
 
 .custom-select {
     margin: 1vw 1vw;
-    width: 25vw;
+    width: 90%;
     height: 2vw;
     font-size: 1vw;
+    color: #2F8565;
+    background-color: rgb(101, 101, 101);
+    outline: none;
 }

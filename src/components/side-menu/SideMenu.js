@@ -33,16 +33,17 @@ export default class SideMenu extends React.Component {
                 {
                     this.state.show ? (
                     <>
-                    <button className='side-menu-button' style={{top: '1vw', left: '31vw'}} onClick={this.toggleShow}>&#8592;</button>
+                    <button className='side-menu-button' style={{top: '1vw', left: '26vw'}} onClick={this.toggleShow}>&#8592;</button>
                     <div class='side-menu'>
 
-                        <select className="custom-select" onChange={this.changeRecentDroneID}>
-                            <option value={-1}>hide</option>
+                        <select 
+                            className="custom-select" 
+                            onChange={this.changeRecentDroneID} 
+                            onClick={this.props.getDroneListHandler}>
                             {Object.keys(this.props.drones).map((id, d)=>{
                                 return(<option value={id}>{id+". "+this.props.drones[id].name}</option>)
                             })}
                         </select>
-                        <button onClick={this.props.getDroneListHandler}>U</button>
 
                         <StatusView 
                             drones={ this.props.drones }
@@ -53,7 +54,7 @@ export default class SideMenu extends React.Component {
 
                     </div>
                     </>
-                    ) : (<button className='side-menu-button' style={{top: '1vw', left: '4vw'}} onClick={this.toggleShow}>&#8594;</button>)
+                    ) : (<button className='side-menu-button' style={{top: '1vw', left: '1vw'}} onClick={this.toggleShow}>&#8594;</button>)
                 } 
             </>
         )

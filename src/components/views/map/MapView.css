@@ -5,6 +5,7 @@
     top: 0;
     left: 0;
     z-index: -3;
+    background-color:rgb(9, 9, 9) !important;
 }
 
 .map-view-button {
@@ -14,4 +15,46 @@
     background-color: lightyellow;
     color: gray;
     box-shadow: gray 1px 1px 10px;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 0 !important;
+    color: white !important;
+    background: rgba(9, 9, 9, 0.5) !important;
+}
+
+.dark_mode_toggle {
+    position: fixed;
+    bottom: 2vh;
+    left: 50%;
+    background: #fff;
+    border: 2px solid #00151f;
+    width: 45px;
+    height: 20px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: 0.5s;
+}
+
+.dark_mode_toggle.active
+{
+    background: #00151f;
+    border: 2px solid #fff;
+}
+.dark_mode_toggle:before
+{
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #00151f;
+    border-radius: 50%;
+    transition: 0.5s;
+}
+.dark_mode_toggle.active:before
+{
+    left: 27px;
+    background: #fff;
 }

@@ -3,7 +3,6 @@ import './App.css'
 
 import SideMenu from './components/side-menu/SideMenu'
 import MapView from './components/views/map/MapView'
-import ControlerView from './components/views/controler/ControlerView'
 
 import io from "socket.io-client"
 
@@ -13,20 +12,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       socket_io: null,
-      drones: {
-        0: {
-          "drone_id": 0,
-          "name": "",
-          "lat": 0,
-          "lon": 0,
-          "alt": 0,
-          "rel_alt": 0,
-          "vx": 0,
-          "vy": 0,
-          "vz": 0,
-          "hdg": 0,
-        }
-      },
+      drones: {},
       recentDroneID: -1,
       centering: true,
     }
@@ -51,7 +37,10 @@ export default class App extends React.Component {
             "Accept": "application/json"
         }
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status!=200) console.log("fetch errno " + res.status)
+      else res.json()
+    })
     .then(message => {
       let d = this.state.drones
       Object.keys(message.drones).map((key, val)=>{
@@ -61,6 +50,7 @@ export default class App extends React.Component {
       })
       this.setState({drones: d})
     })
+    .catch((e)=>{})
   }
 
   // WEBSOCKET
@@ -76,6 +66,28 @@ export default class App extends React.Component {
     socket.on('status', (message)=> {
       let id = message['drone_id']
       let d = this.state.drones
+      
+      if(!d[id]) {
+        d[id] = {
+          "drone_id": id,
+          "name": "test #"+id,
+          "lat": 0,
+          "lon": 0,
+          "alt": 0,
+          "rel_alt": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hdg": 0,
+          "autopilot": "",
+          "mode": "",
+          "sys_status": "",
+          "mission": {
+            index: 0,
+            waypoints: [],
+          },
+        }
+      }
 
       d[id].lat = message.lat
       d[id].lon = message.lon
@@ -88,21 +100,34 @@ export default class App extends React.Component {
       d[id].vz = message.vz
 
       d[id].hdg = message.hdg
-      
-      this.setState({drones: d, recentDroneID: id})
+
+      d[id].autopilot = message.autopilot
+      d[id].mode = message.mode
+      d[id].sys_status = message.sys_status
+
+      this.setState({drones: d})
+      if(this.state.recentDroneID == -1) this.setState({recentDroneID: id})
     })
 
     socket.on('disconnect', ()=>{
       console.log('disconnected')
       socket.connect()
     })
-}
+  }
+
+  changeMission(id, mission) {
+    let d = this.state.drones
+    d[id].mission.index = mission.index
+    d[id].mission.waypoints = mission.waypoints
+    this.setState({drones: d})
+  }
 
   render() {
     return(
       <div class='app-container'>
 
-        <h1 style={{textAlign: "center", fontSize: "2vw"}}>WUThrust Ground Station</h1>
+        <h1 style={{textAlign: "center", fontSize: "4vh", color:"#2F8565", margin: "0"}}>WUThrust Ground Station</h1>
+        <h2 style={{textAlign: "center", fontSize: "2vh", color:"#2F8565", margin: "0"}}>Operating drone with id <u>{this.state.recentDroneID}</u></h2>
 
         <SideMenu
           drones={this.state.drones}
@@ -119,9 +144,9 @@ export default class App extends React.Component {
           recentDroneIDHandler={(state)=>{this.setState({recentDroneID: state})}}
           centering={this.state.centering}
           socket_io={this.state.socket_io}
+          setCenteringState={(val)=>{this.setState({centering: val})}}
+          changeMission={(index, mission)=>this.changeMission(index, mission)}
         />
-
-        <ControlerView />
 
       </div>
     )
