@@ -74,8 +74,8 @@ export default class StatusView extends React.Component {
                                     onClick={()=>this.RTL()}
                                     style={{cursor: "pointer"}}
                                 >
-                                    <p class='name'>ReturnToLaunch</p>
-                                    <p class='value'>deploy RTL</p>
+                                    <p class='name'>RTL</p>
+                                    <p class='value' style={{color: "red"}}>RTL</p>
                                 </div>
 
                                 <button onClick={()=>{console.log(this.props.drones[this.props.recentDroneID])}}>GET JSON</button>

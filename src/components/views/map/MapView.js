@@ -14,9 +14,9 @@ const drone_icon = new L.Icon({
 });
 
 const targer_icon = new L.Icon({
-    iconUrl: require('./img/target.svg'),
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
+    iconUrl: require('./img/target_new.svg'),
+    iconSize: [12, 12],
+    iconAnchor: [6, 6],
 });
 
 export default class MapView extends React.Component {
@@ -41,11 +41,13 @@ export default class MapView extends React.Component {
                 waypoints: [],
             },
             default_altitude: 100,
+            default_speed: 100,
         }
 
         this.getWaypointPosition = this.getWaypointPosition.bind(this)
         this.getCurrentMission = this.getCurrentMission.bind(this)
         this.updateWaypointAltitude = this.updateWaypointAltitude.bind(this)
+        this.updateWaypointSpeed = this.updateWaypointSpeed.bind(this)
     }
 
     deg2rad(deg) {
@@ -146,6 +148,21 @@ export default class MapView extends React.Component {
         })
     }
 
+    updateWaypointSpeed(id, new_speed) {
+        let drone = this.props.drones[this.props.recentDroneID]
+        let waypoint = drone.mission.waypoints[id]
+        waypoint.speed = new_speed
+        let waypoints_tmp = drone.mission.waypoints
+        waypoints_tmp[id] = waypoint
+        this.setState({
+            current_mission: {
+                index: drone.mission.index,
+                waypoints: waypoints_tmp,
+            },
+            default_speed: new_speed,
+        })
+    }
+
     darkModeSwitch() {
         this.darkMode = !this.darkMode
         if(this.darkMode) {
@@ -169,6 +186,7 @@ export default class MapView extends React.Component {
                             current_mission={this.props.drones[this.props.recentDroneID].mission}
                             updateCurrentMissionHandler={this.getCurrentMission}
                             updateWaypointAltitude={this.updateWaypointAltitude}
+                            updateWaypointSpeed={this.updateWaypointSpeed}
                         />
 
                         {/* MAP COMPONENT WITH MARKERS AND DRONE POSITION INITION */}
@@ -202,7 +220,7 @@ export default class MapView extends React.Component {
                                                         this.props.setCenteringState(true);
                                                     }}
                                     >
-                                        <Popup>
+                                        <Popup autoPan={false}>
                                             <p>{key}. {drone.name}</p>
                                             <p>{drone.lat}, {drone.lon}</p>
                                             <p>hdg: {drone.hdg}</p>
@@ -244,7 +262,7 @@ export default class MapView extends React.Component {
                                         center={[waypoint.lat, waypoint.lon]}
                                         color={ key == 0 ? "green" : key == last_index-1 ? "red" : "orange" }
                                     >
-                                        <Popup>
+                                        <Popup autoPan={false}>
                                             <h1>{waypoint.id == 0 ? "START" : waypoint.id}</h1>
                                         </Popup>
                                     </CircleMarker>
@@ -256,7 +274,7 @@ export default class MapView extends React.Component {
                                 position={this.state.last_click}
                                 onMouseOver={(e) => {e.target.openPopup()}}
                             >
-                                <Popup>
+                                <Popup autoPan={false}>
                                     <UserControlMaker
                                         drone_id={this.props.recentDroneID}
                                         position={this.state.last_click}

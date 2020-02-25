@@ -61,7 +61,6 @@ export default class App extends React.Component {
         console.log('connected')
         this.setState({socket_io: socket})
         socket.emit('subscribe', {"drone_id": 0})
-        socket.emit('subscribe', {"drone_id": 1})
     })
     
     socket.on('status', (message)=> {

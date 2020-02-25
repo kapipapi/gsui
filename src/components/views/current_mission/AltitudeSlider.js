@@ -14,6 +14,8 @@ export default class UserControlMaker extends React.Component {
 
     render() {
         return(<>
+            <span style={{color:"white"}}>Altitude: </span>
+            <span style={{color:"white", position: "absolute",right: "10px"}}>{this.state.height} m</span>
             <Slider
                 style={{height:"2vh", marginBottom: "2vh"}}
                 className="fixed_altitude_slider"

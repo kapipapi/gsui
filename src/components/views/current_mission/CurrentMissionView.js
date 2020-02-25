@@ -73,8 +73,10 @@ export default class CurrentMissionView extends React.Component {
                                             id={waypoint.id}
                                             position={[waypoint.lat, waypoint.lon]}
                                             alt={waypoint.alt}
+                                            speed={waypoint.speed}
                                             selected={this.state.selected}
                                             changeSelected={()=>this.setState({selected: waypoint.id})}
+                                            updateWaypointSpeed={this.props.updateWaypointSpeed}
                                         />
                                     </>)
                                 })
@@ -91,7 +93,7 @@ export default class CurrentMissionView extends React.Component {
                             <div className="start_button" onClick={()=>{this.sendMissionAction()}}>DEPLOY MISSION</div>
                             </>}
 
-                            <ControlerView />
+                            <ControlerView/>
 
                         </div></>
                     ) : (
