@@ -66,7 +66,7 @@ export default class App extends React.Component {
     socket.on('status', (message)=> {
       let id = message['drone_id']
       let d = this.state.drones
-      
+
       if(!d[id]) {
         d[id] = {
           "drone_id": id,
@@ -78,10 +78,14 @@ export default class App extends React.Component {
           "vx": 0,
           "vy": 0,
           "vz": 0,
+          "velocity": 0,
           "hdg": 0,
           "autopilot": "",
           "mode": "",
           "sys_status": "",
+          "voltage_battery": 0,
+          "current_battery": 0,
+          "battery_remaining": 0,
           "mission": {
             index: 0,
             waypoints: [],
@@ -89,21 +93,7 @@ export default class App extends React.Component {
         }
       }
 
-      d[id].lat = message.lat
-      d[id].lon = message.lon
-
-      d[id].alt = message.alt
-      d[id].rel_alt = message.rel_alt
-
-      d[id].vx = message.vx
-      d[id].vy = message.vy
-      d[id].vz = message.vz
-
-      d[id].hdg = message.hdg
-
-      d[id].autopilot = message.autopilot
-      d[id].mode = message.mode
-      d[id].sys_status = message.sys_status
+      Object.assign(d[id], message)
 
       this.setState({drones: d})
       if(this.state.recentDroneID == -1) this.setState({recentDroneID: id})

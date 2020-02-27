@@ -49,6 +49,8 @@ export default class StatusView extends React.Component {
                                 <NumericBox name='vx' value={this.props.drones[this.props.recentDroneID]['vx']} unit='m/s'/>
                                 <NumericBox name='vy' value={this.props.drones[this.props.recentDroneID]['vy']} unit='m/s'/>
                                 <NumericBox name='vz' value={this.props.drones[this.props.recentDroneID]['vz']} unit='m/s'/>
+
+                                <NumericBox name='velocity' value={this.props.drones[this.props.recentDroneID]['velocity']} unit='m/s'/>
                     
                                 <div 
                                     class='state-info-box' 
@@ -56,7 +58,7 @@ export default class StatusView extends React.Component {
                                     style={{cursor: "pointer"}}
                                 >
                                     <p class='name'>CENTERING</p>
-                                    <p class='value'>{this.props.centering ? "ON" : "OFF"}</p>
+                                    <p class='value' style={{color: "blue"}}>{this.props.centering ? "ON" : "OFF"}</p>
                                 </div>
 
                                 <TextBox 
@@ -68,6 +70,10 @@ export default class StatusView extends React.Component {
                                     name="mode"
                                     value={this.props.drones[this.props.recentDroneID]['mode']}
                                 />
+
+                                <NumericBox name='voltage' value={this.props.drones[this.props.recentDroneID]['voltage_battery']} unit='V'/>
+                                <NumericBox name='current' value={this.props.drones[this.props.recentDroneID]['current_battery']} unit='mA'/>
+                                <NumericBox name='battery' value={this.props.drones[this.props.recentDroneID]['battery_remaining']} unit='%'/>
 
                                 <div 
                                     class='state-info-box' 
