@@ -38,7 +38,7 @@ export default class App extends React.Component {
         }
     })
     .then(res => {
-      if (res.status!=200) console.log("fetch errno " + res.status)
+      if (Number(res.status) !== 200) console.log("fetch errno " + res.status)
       else res.json()
     })
     .then(message => {
@@ -96,7 +96,7 @@ export default class App extends React.Component {
       Object.assign(d[id], message)
 
       this.setState({drones: d})
-      if(this.state.recentDroneID == -1) this.setState({recentDroneID: id})
+      if(Number(this.state.recentDroneID) === -1) this.setState({recentDroneID: id})
     })
 
     socket.on('disconnect', ()=>{
