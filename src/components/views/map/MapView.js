@@ -75,7 +75,7 @@ export default class MapView extends React.Component {
 
                 let new_path = [drone.lat, drone.lon]
 
-                if(new_path[0] != 0 && new_path[1] != 0){
+                if(Number(new_path[0]) !== 0 && Number(new_path[1]) !== 0){
                     if(!recent_path){
                         recent_path = [new_path]
                         let tmp_path = this.state.path
@@ -92,6 +92,7 @@ export default class MapView extends React.Component {
                     }
                 }
             }
+            return null
         })
     }
 
@@ -209,6 +210,7 @@ export default class MapView extends React.Component {
                                 let drone = this.props.drones[key]
                                 return(<>
                                     <RotatedMarker
+                                        key={drone.id}
                                         icon={drone_icon}
                                         position={this.getDronePosition(key)}
                                         rotationAngle={drone.hdg}
@@ -220,7 +222,7 @@ export default class MapView extends React.Component {
                                                         this.props.setCenteringState(true);
                                                     }}
                                     >
-                                        <Popup autoPan={false}>
+                                        <Popup key={drone.id} autoPan={false}>
                                             <p>{key}. {drone.name}</p>
                                             <p>{drone.lat}, {drone.lon}</p>
                                             <p>hdg: {drone.hdg}</p>
@@ -237,10 +239,12 @@ export default class MapView extends React.Component {
                                     path_tmp.push([drone.lat, drone.lon])
                                     return(
                                         <Polyline
+                                            key={drone.id}
                                             positions={ path_tmp }
                                         />
                                     )
                                 }
+                                return null
                             })}
 
                             {/* DRAW MISSION PATH */}
@@ -259,11 +263,12 @@ export default class MapView extends React.Component {
                                 let waypoint = drone.mission.waypoints[key]
                                 return(
                                     <CircleMarker
+                                        key={waypoint.id}
                                         center={[waypoint.lat, waypoint.lon]}
-                                        color={ key == 0 ? "green" : key == last_index-1 ? "red" : "orange" }
+                                        color={ Number(key) === 0 ? "green" : Number(key) === last_index-1 ? "red" : "orange" }
                                     >
-                                        <Popup autoPan={false}>
-                                            <h1>{waypoint.id == 0 ? "START" : waypoint.id}</h1>
+                                        <Popup key={waypoint.id} autoPan={false}>
+                                            <h1>{Number(waypoint.id) === 0 ? "START" : waypoint.id}</h1>
                                         </Popup>
                                     </CircleMarker>
                                 )
@@ -286,7 +291,7 @@ export default class MapView extends React.Component {
                             </Marker>
                         </Map>
 
-                        <div class={this.darkMode ? 'dark_mode_toggle active' : 'dark_mode_toggle'} onClick={()=>this.darkModeSwitch()}></div>
+                        <div className={this.darkMode ? 'dark_mode_toggle active' : 'dark_mode_toggle'} onClick={()=>this.darkModeSwitch()}></div>
                     </>) : (null)
                 }
             </>

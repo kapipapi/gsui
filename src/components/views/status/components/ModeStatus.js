@@ -27,8 +27,8 @@ export default class ModeStatus extends React.Component {
 
     render() {
         return(
-            <div class='mode-status'>
-                <p class='name'>{this.props.name}</p>
+            <div className='mode-status'>
+                <p className='name'>{this.props.name}</p>
                 {this.imgMode(this.props.value)}
             </div>
         )

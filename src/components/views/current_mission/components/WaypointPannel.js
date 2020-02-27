@@ -11,8 +11,8 @@ export default class WaypointPannel extends React.Component {
     }
 
     render(){
-        return(<div onClick={()=>{this.props.changeSelected()}} style={this.props.id==this.props.selected ? {border: "1px solid #2F8565"} : {border: "none"}}class='waypoint-pannel'>
-            <p style={{fontWeight: "900"}}>{this.props.id==0 ? "START" : this.props.id}</p>
+        return(<div onClick={()=>{this.props.changeSelected()}} style={Number(this.props.id) === this.props.selected ? {border: "1px solid #2F8565"} : {border: "none"}} className='waypoint-pannel'>
+            <p style={{fontWeight: "900"}}>{Number(this.props.id) === 0 ? "START" : this.props.id}</p>
             <p style={{fontSize: "10px"}}>lat: {this.props.position[0]}</p>
             <p style={{fontSize: "10px"}}>lon: {this.props.position[1]}</p>
             <p>ALTITUDE: {this.props.alt ? this.props.alt+" meters" : "GROUND!"}</p>

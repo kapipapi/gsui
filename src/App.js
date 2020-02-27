@@ -114,7 +114,7 @@ export default class App extends React.Component {
 
   render() {
     return(
-      <div class='app-container'>
+      <div className='app-container'>
 
         <h1 style={{textAlign: "center", fontSize: "4vh", color:"#2F8565", margin: "0"}}>WUThrust Ground Station</h1>
         <h2 style={{textAlign: "center", fontSize: "2vh", color:"#2F8565", margin: "0"}}>Operating drone with id <u>{this.state.recentDroneID}</u></h2>

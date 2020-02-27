@@ -58,8 +58,8 @@ export default class CurrentMissionView extends React.Component {
             <>
                 {
                     this.state.show ? (<>
-                        <div class='current-mission-view'>
-                            <ul class='horizontal-menu-mission-view'>
+                        <div className='current-mission-view'>
+                            <ul className='horizontal-menu-mission-view'>
                                 <li><div onClick={this.toggleShow}>&#10539;<br/>close</div></li>
                                 <li><div onClick={()=>{this.props.updateCurrentMissionHandler({index: 0,waypoints: [],})}}>&#8709;<br/>clear</div></li>
                             </ul>
@@ -70,6 +70,7 @@ export default class CurrentMissionView extends React.Component {
                                     let waypoint = this.props.current_mission.waypoints[key]
                                     return(<>
                                         <WaypointPannel
+                                            key={waypoint.id}
                                             id={waypoint.id}
                                             position={[waypoint.lat, waypoint.lon]}
                                             alt={waypoint.alt}
@@ -97,7 +98,7 @@ export default class CurrentMissionView extends React.Component {
 
                         </div></>
                     ) : (
-                    <div class='current-mission-view-opener' onClick={this.toggleShow}></div>)
+                    <div className='current-mission-view-opener' onClick={this.toggleShow}></div>)
                 }
             </>
         );

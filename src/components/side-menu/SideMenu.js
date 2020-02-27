@@ -34,7 +34,7 @@ export default class SideMenu extends React.Component {
                     this.state.show ? (
                     <>
                     <button className='side-menu-button' style={{top: '1vw', left: '26vw'}} onClick={this.toggleShow}>&#8592;</button>
-                    <div class='side-menu'>
+                    <div className='side-menu'>
 
                         <select 
                             className="custom-select" 

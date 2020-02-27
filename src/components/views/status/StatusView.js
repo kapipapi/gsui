@@ -37,11 +37,11 @@ export default class StatusView extends React.Component {
             <>
                 {
                     this.state.show ? (
-                        <div class='status-view'>
+                        <div className='status-view'>
                             {this.props.recentDroneID > -1 ? (
                             <>
                             <h3 style={{textAlign: 'center', margin: '.5vw 0 0 0', padding: 0, color: "white"}}>{this.props.drones[this.props.recentDroneID]['name']}</h3><br/>
-                            <div class='status-info-grid'>
+                            <div className='status-info-grid'>
                                 <NumericBox name='lat' value={this.props.drones[this.props.recentDroneID]['lat']} unit='deg'/>
                                 <NumericBox name='lon' value={this.props.drones[this.props.recentDroneID]['lon']} unit='deg'/>
                                 <NumericBox name='rel alt' value={this.props.drones[this.props.recentDroneID]['rel_alt']} unit='m'/>
@@ -53,12 +53,12 @@ export default class StatusView extends React.Component {
                                 <NumericBox name='velocity' value={this.props.drones[this.props.recentDroneID]['velocity']} unit='m/s'/>
                     
                                 <div 
-                                    class='state-info-box' 
+                                    className='state-info-box' 
                                     onClick={()=>this.props.mapCenteringHandle(!this.props.centering)}
                                     style={{cursor: "pointer"}}
                                 >
-                                    <p class='name'>CENTERING</p>
-                                    <p class='value' style={{color: "blue"}}>{this.props.centering ? "ON" : "OFF"}</p>
+                                    <p className='name'>CENTERING</p>
+                                    <p className='value' style={{color: "blue"}}>{this.props.centering ? "ON" : "OFF"}</p>
                                 </div>
 
                                 <TextBox 
@@ -76,12 +76,12 @@ export default class StatusView extends React.Component {
                                 <NumericBox name='battery' value={this.props.drones[this.props.recentDroneID]['battery_remaining']} unit='%'/>
 
                                 <div 
-                                    class='state-info-box' 
+                                    className='state-info-box' 
                                     onClick={()=>this.RTL()}
                                     style={{cursor: "pointer"}}
                                 >
-                                    <p class='name'>RTL</p>
-                                    <p class='value' style={{color: "red"}}>RTL</p>
+                                    <p className='name'>RTL</p>
+                                    <p className='value' style={{color: "red"}}>RTL</p>
                                 </div>
 
                                 <button onClick={()=>{console.log(this.props.drones[this.props.recentDroneID])}}>GET JSON</button>
