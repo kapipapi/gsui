@@ -12,7 +12,7 @@
     "react-leaflet": "^2.5.0",
     "react-leaflet-rotatedmarker": "^0.1.0",
     "react-number-format": "^4.3.1",
-    "react-scripts": "3.2.0",
+    "react-scripts": "5.0.1",
     "react-select": "^3.0.8",
     "socket.io-client": "^2.3.0",
     "socketio": "^1.0.0",
